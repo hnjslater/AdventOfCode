@@ -139,7 +139,7 @@ func GetEdge(tiles map[int][]string, num int, rotate int, flip bool, mirror bool
     return result
 }
 
-func TryTile(tiles map[int][]string, used []Tile) ([]Tile, bool) {
+func TryTile(tiles map[int][]string, edges map[string][]int, used []Tile) ([]Tile, bool) {
     x, y := rAddr(len(used))
     if len(used) == 1 {
         fmt.Print(time.Now().Format("2006-01-02 15:04:05"), " ")
@@ -152,14 +152,18 @@ func TryTile(tiles map[int][]string, used []Tile) ([]Tile, bool) {
     var matches []Tile
     var e string
     var s string
+    c := ""
     if y > 0 {
         e = East(used[len(used)-1].value)
     }
     if x > 0 {
         s = South(used[Addr(x-1,y)].value)
     }
-
-    for k,_ := range tiles {
+    loop: for _,k := range edges[c] {
+        _,found := tiles[k]
+        if ! found {
+            continue loop
+        }
         for i := 0; i < 4; i++ {
             flip := false
             mirror := false
@@ -201,7 +205,7 @@ func TryTile(tiles map[int][]string, used []Tile) ([]Tile, bool) {
     for _,m := range matches {
         old_tile := tiles[m.num]
         delete(tiles, m.num)
-        r, ok := TryTile(tiles, append(used, m))
+        r, ok := TryTile(tiles, edges, append(used, m))
         tiles[m.num] = old_tile
         if ok {
             return r, ok
@@ -233,6 +237,7 @@ func main() {
     scanner := bufio.NewScanner(file)
 
     tiles := make(map[int][]string)
+    edges := make(map[string][]int)
     tile := 0
 
     for scanner.Scan() {
@@ -247,11 +252,29 @@ func main() {
         }
     }
 
-    var layout []Tile;
-    layout2, _ := TryTile(tiles, layout)
+    for k,v := range tiles {
+        edges[North(v)] = append(edges[North(v)], k)
+        edges[South(v)] = append(edges[South(v)], k)
+        edges[East(v)] = append(edges[East(v)], k)
+        edges[West(v)] = append(edges[West(v)], k)
+        edges[Reverse(North(v))] = append(edges[Reverse(North(v))], k)
+        edges[Reverse(South(v))] = append(edges[Reverse(South(v))], k)
+        edges[Reverse(East(v))] = append(edges[Reverse(East(v))], k)
+        edges[Reverse(West(v))] = append(edges[Reverse(West(v))], k)
+        edges[""] = append(edges[""], k)
+    }
 
+    var layout []Tile;
+    layout2, ok := TryTile(tiles, edges, layout)
+    if ! ok {
+        log.Fatal("No result found")
+    }
     for _,v := range layout2 {
         fmt.Print(v.num, " ")
+    }
+    fmt.Println()
+    if *debug {
+        fmt.Print(layout2[0].num*layout2[2].num*layout2[6].num*layout2[8].num)
     }
     fmt.Println()
 }
