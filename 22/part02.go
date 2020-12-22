@@ -27,19 +27,16 @@ func my_copy(hands [][]int, p0c int, p1c int) [][]int {
 	return hands2
 }
 
-func play(game int, hands [][]int, history map[string]bool) (int, int) {
-	history2 := make(map[string]bool)
-	for k, v := range history {
-		history2[k] = v
-	}
+func play(game int, hands [][]int) (int, int) {
+	history := make(map[string]bool)
 
 	i := 1
 	subgame := game
 	for len(hands[0]) > 0 && len(hands[1]) > 0 {
-		if history2[hash(hands)] {
+		if history[hash(hands)] {
 			return 0, subgame
 		}
-		history2[hash(hands)] = true
+		history[hash(hands)] = true
 
 		if *debug {
 			fmt.Printf("-- Round %v (Game %v) --\n", i, game)
@@ -60,7 +57,7 @@ func play(game int, hands [][]int, history map[string]bool) (int, int) {
 				fmt.Println("NEW GAME")
 			}
 			subgame++
-			winner, subgame = play(game, my_copy(hands, played[0], played[1]), history2)
+			winner, subgame = play(game, my_copy(hands, played[0], played[1]))
 		} else if played[1] > played[0] {
 			winner = 1
 		}
@@ -121,8 +118,7 @@ func main() {
 			hands[player-1] = append(hands[player-1], x)
 		}
 	}
-	history := make(map[string]bool)
-	play(1, hands, history)
+	play(1, hands)
 
 	total := 0
 
