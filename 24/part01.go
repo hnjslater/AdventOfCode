@@ -10,7 +10,6 @@ import (
 
 var input_file = flag.String("input", "input.txt", "Input file")
 var debug = flag.Bool("debug", false, "Debug")
-var part = flag.Int("part", 1, "Part2?")
 
 type Coords struct {
 	x, y int
@@ -74,30 +73,6 @@ func main() {
 			delete(floor, coords)
 		} else {
 			floor[coords] = true
-		}
-	}
-	if *part == 2 {
-		for g := 0; g < 100; g++ {
-			todo := make(map[Coords]bool)
-			next := make(map[Coords]bool)
-
-			for k := range floor {
-				count := countNeighbours(floor, k)
-				if count == 1 || count == 2 {
-					next[k] = true
-				}
-				for _, d := range compass {
-					todo[neighbour(k, d)] = true
-				}
-			}
-
-			for k := range todo {
-				if countNeighbours(floor, k) == 2 {
-					next[k] = true
-				}
-			}
-
-			floor = next
 		}
 	}
 	fmt.Println(len(floor))
