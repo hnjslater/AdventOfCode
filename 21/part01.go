@@ -52,7 +52,7 @@ func main() {
 			if !found {
 				a_to_i[algn] = imap
 			} else {
-				for k, _ := range options {
+				for k := range options {
 					if !imap[k] {
 						delete(options, k)
 					}
@@ -62,12 +62,12 @@ func main() {
 	}
 
 	clean_ingts := make(map[string]bool)
-	for k, _ := range all_ingts {
+	for k := range all_ingts {
 		clean_ingts[k] = true
 	}
 
 	for _, v := range a_to_i {
-		for k2, _ := range v {
+		for k2 := range v {
 			delete(clean_ingts, k2)
 		}
 	}

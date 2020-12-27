@@ -24,7 +24,7 @@ func main() {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-                line = "." + line + "."
+		line = "." + line + "."
 		if len(buffer) == 0 {
 			buffer = append(buffer, []byte(strings.Repeat(".", len(line))))
 		}
@@ -69,13 +69,13 @@ func main() {
 
 		buffer = next_buffer
 	}
-        count := 0
-        for r:=0; r < len(buffer); r++ {
-            for c:=0; c < len(buffer[r]); c++ {
-                if buffer[r][c] == '#' {
-                    count++
-                }
-            }
-        }
-        fmt.Println(count)
+	count := 0
+	for r := 0; r < len(buffer); r++ {
+		for c := 0; c < len(buffer[r]); c++ {
+			if buffer[r][c] == '#' {
+				count++
+			}
+		}
+	}
+	fmt.Println(count)
 }

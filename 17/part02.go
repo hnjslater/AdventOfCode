@@ -54,7 +54,7 @@ func CountNeighbours(world map[Coords]bool, c Coords) int {
 
 func PrintWorld(world map[Coords]bool) {
 	var minx, miny, minz, minw, maxx, maxy, maxz, maxw int
-	for k, _ := range world {
+	for k := range world {
 		minx = Min(k.x, minx)
 		miny = Min(k.y, miny)
 		minz = Min(k.z, minz)
@@ -111,7 +111,7 @@ func main() {
 			PrintWorld(world)
 		}
 		var minx, miny, minz, minw, maxx, maxy, maxz, maxw int
-		for k, _ := range world {
+		for k := range world {
 			minx = Min(k.x, minx)
 			miny = Min(k.y, miny)
 			minz = Min(k.z, minz)

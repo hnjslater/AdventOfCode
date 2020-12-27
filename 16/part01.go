@@ -8,7 +8,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
-        "strings"
+	"strings"
 )
 
 var input_file = flag.String("input", "input.txt", "Input file")
@@ -23,42 +23,42 @@ func main() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-        var rules [][]int
+	var rules [][]int
 	for scanner.Scan() {
-            line := scanner.Text()
-            if line == "" {
-                break
-            }
-            matches := rule_re.FindStringSubmatch(line)
-            min0,_ := strconv.Atoi(matches[rule_re.SubexpIndex("min0")])
-            max0,_ := strconv.Atoi(matches[rule_re.SubexpIndex("max0")])
-            min1,_ := strconv.Atoi(matches[rule_re.SubexpIndex("min1")])
-            max1,_ := strconv.Atoi(matches[rule_re.SubexpIndex("max1")])
-            
-            rules = append(rules, []int{min0,max0})
-            rules = append(rules, []int{min1,max1})
+		line := scanner.Text()
+		if line == "" {
+			break
+		}
+		matches := rule_re.FindStringSubmatch(line)
+		min0, _ := strconv.Atoi(matches[rule_re.SubexpIndex("min0")])
+		max0, _ := strconv.Atoi(matches[rule_re.SubexpIndex("max0")])
+		min1, _ := strconv.Atoi(matches[rule_re.SubexpIndex("min1")])
+		max1, _ := strconv.Atoi(matches[rule_re.SubexpIndex("max1")])
+
+		rules = append(rules, []int{min0, max0})
+		rules = append(rules, []int{min1, max1})
 	}
 
-        scanner.Scan()
-        scanner.Scan()
-        //your_ticket_str := scanner.Text()
-        scanner.Scan()
-        total := 0
-        for scanner.Scan() {
-            line := scanner.Text()
-            for _,vs := range strings.Split(line,",") {
-                v,_ := strconv.Atoi(vs)
-                matched := false
-                for _,r := range rules {
-                    if v >= r[0] && v <= r[1] {
-                        matched = true
-                    }
-                }
-                if !matched {
-                    total += v
-                }
-            }
-        }
+	scanner.Scan()
+	scanner.Scan()
+	//your_ticket_str := scanner.Text()
+	scanner.Scan()
+	total := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		for _, vs := range strings.Split(line, ",") {
+			v, _ := strconv.Atoi(vs)
+			matched := false
+			for _, r := range rules {
+				if v >= r[0] && v <= r[1] {
+					matched = true
+				}
+			}
+			if !matched {
+				total += v
+			}
+		}
+	}
 
 	fmt.Println(total)
 }

@@ -14,7 +14,7 @@ var input_file = flag.String("input", "input.txt", "Input file")
 var debug = flag.Bool("debug", false, "Debug")
 
 func AKey(m map[string]bool) string {
-	for k, _ := range m {
+	for k := range m {
 		return k
 	}
 	return ""
@@ -57,7 +57,7 @@ func main() {
 			if !found {
 				a_to_i[algn] = imap
 			} else {
-				for k, _ := range options {
+				for k := range options {
 					if !imap[k] {
 						delete(options, k)
 					}
@@ -90,7 +90,7 @@ func main() {
 	}
 
 	var allegens []string
-	for k, _ := range a_to_i2 {
+	for k := range a_to_i2 {
 		allegens = append(allegens, k)
 	}
 
