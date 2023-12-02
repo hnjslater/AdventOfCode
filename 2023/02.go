@@ -51,7 +51,7 @@ func main() {
 			for _, m := range matches {
 				turn[m[2]], _ = strconv.Atoi(m[1])
 			}
-			for _, c := range []string{"red", "green", "blue"} {
+			for c := range MAX_CUBES {
 				possible = possible && turn[c] <= MAX_CUBES[c]
 				maxes[c] = max(maxes[c], turn[c])
 			}
@@ -62,7 +62,11 @@ func main() {
 				total += game
 			}
 		} else {
-			total += maxes["red"] * maxes["green"] * maxes["blue"]
+			subtotal := 1
+			for c := range MAX_CUBES {
+				subtotal *= maxes[c]
+			}
+			total += subtotal
 		}
 		game++
 	}
