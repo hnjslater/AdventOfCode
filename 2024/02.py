@@ -8,13 +8,13 @@ def is_safe(line):
     for i, curr in enumerate(line[1:], 1):
         diff = curr - line[i-1]
         if diff == 0:
-            return (False, i)
+            return False
         if increasing and diff < 0:
-            return (False, i)
+            return False
         if decreasing and diff > 0:
-            return (False, i)
+            return False
         if abs(diff) > 3:
-            return (False, i)
+            return False
 
     return (True, -1)
 
@@ -29,17 +29,13 @@ result = 0
 for l in f:
     line = [int(x) for x in l.split()]
 
-    safe, bad_idx = is_safe(line)
-
-    if safe:
+    if is_safe(line):
         result += 1
     elif part == 2:
         for i in range(len(line)):
             line2 = line.copy()
             del line2[i]
-            safe, bad_idx = is_safe(line2)
-
-            if safe:
+            if is_safe(line2):
                 result += 1
                 break
 
