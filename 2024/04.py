@@ -1,7 +1,5 @@
 import argparse
 import sys
-import collections
-import itertools
 
 
 def search(needle: str, haystack: list[str], directions: list[tuple[int, int]]) -> int:
@@ -32,7 +30,6 @@ def main(args: argparse.Namespace) -> int:
         forward = len(search('SAMX', file, directions))
         print(forward + backward)
     else:
-        directions = [(1, -1), (1, 1)]
         nw_se = set(search('MAS', file, [(+1, +1)]) +
                     search('SAM', file, [(+1, +1)]))
         ne_sw = set(search('MAS', file, [(+1, -1)]) +
