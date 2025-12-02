@@ -1,7 +1,7 @@
 import sys
 import argparse
 import collections
-from textwrap import wrap
+import itertools
 
 
 def main(args: argparse.Namespace) -> int:
@@ -17,16 +17,15 @@ def main(args: argparse.Namespace) -> int:
                 if args.part == 1:
                     if len(s) % 2 > 0:
                         continue
-                    a, b = wrap(s, len(s) // 2)
+                    a, b = itertools.batched(s, len(s) // 2)
                     if a == b:
                         result += x
                 else:
-                    for i in range(1, (len(s) // 2) + 1):
+                    for i in range((len(s) // 2) + 1, 1, -1):
                         if len(s) % i > 0:
                             continue
-                        items = wrap(s, i)
-
-                        if all(a == items[0] for a in items):
+                        first = s[0:i]
+                        if all(a == first for a in itertools.batched(s, i)):
                             result += x
                             break
 
